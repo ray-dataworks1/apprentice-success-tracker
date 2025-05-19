@@ -1,0 +1,35 @@
+# VSCode settings
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Python-related
+__pycache__/
+*.pyc
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temp/data files
+*.log
+*.tmp
+*.bak
+*.sqlite
+*.db
+
+# Power BI Desktop files
+*.pbix.autosave
+*.pbit.autosave
+*.pbi-backup
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Notes, secrets, drafts
+/notes/
+/secrets/
+/scratchpad/
