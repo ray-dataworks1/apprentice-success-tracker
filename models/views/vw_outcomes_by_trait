@@ -1,0 +1,58 @@
+CREATE OR REPLACE VIEW vw_outcomes_by_trait AS
+SELECT
+  'gender' AS trait,
+  da.gender AS trait_value,
+  COUNT(*) AS total,
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2) AS risk_rate,
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2) AS placement_rate,
+  ROUND(AVG(fp.attendance_rate)::NUMERIC, 2) AS avg_attendance,
+  ROUND(AVG(fp.feedback_score)::NUMERIC, 2) AS avg_feedback,
+  ROUND(AVG(fp.project_score_avg)::NUMERIC, 2) AS avg_project_score
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+GROUP BY da.gender
+
+UNION ALL
+
+SELECT
+  'ethnicity',
+  da.ethnicity,
+  COUNT(*),
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2),
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2),
+  ROUND(AVG(fp.attendance_rate)::NUMERIC, 2),
+  ROUND(AVG(fp.feedback_score)::NUMERIC, 2),
+  ROUND(AVG(fp.project_score_avg)::NUMERIC, 2)
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+GROUP BY da.ethnicity
+
+UNION ALL
+
+SELECT
+  'neurodivergent_or_disabled',
+  da.neurodivergent_or_disabled,
+  COUNT(*),
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2),
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2),
+  ROUND(AVG(fp.attendance_rate)::NUMERIC, 2),
+  ROUND(AVG(fp.feedback_score)::NUMERIC, 2),
+  ROUND(AVG(fp.project_score_avg)::NUMERIC, 2)
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+GROUP BY da.neurodivergent_or_disabled
+
+UNION ALL
+
+SELECT
+  'socioeconomic_status',
+  da.socioeconomic_status,
+  COUNT(*),
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2),
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2),
+  ROUND(AVG(fp.attendance_rate)::NUMERIC, 2),
+  ROUND(AVG(fp.feedback_score)::NUMERIC, 2),
+  ROUND(AVG(fp.project_score_avg)::NUMERIC, 2)
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+GROUP BY da.socioeconomic_status;

@@ -1,0 +1,20 @@
+CREATE OR REPLACE VIEW vw_gender_bias_audit AS
+SELECT
+  da.gender,
+  COUNT(*) AS total_apprentices,
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2) AS risk_rate,
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2) AS placement_rate,
+  ROUND(AVG(
+    CASE 
+      WHEN fp.perceived_readiness = 'Excellent' THEN 3 
+      WHEN fp.perceived_readiness = 'Good' THEN 2 
+      WHEN fp.perceived_readiness = 'Needs Support' THEN 1 
+    END
+  )::NUMERIC, 2) AS avg_readiness_score
+  
+  ROUND(AVG(fp.attendance_rate)::NUMERIC, 2) AS avg_attendance_rate,
+  ROUND(AVG(fp.feedback_score)::NUMERIC, 2) AS avg_feedback_score,
+  ROUND(AVG(fp.late_submissions)::NUMERIC, 2) AS avg_late_submissions
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+GROUP BY da.gender;

@@ -1,0 +1,19 @@
+CREATE OR REPLACE VIEW vw_nd_bias_by_curriculum AS
+SELECT
+  c.curriculum_version,
+  da.neurodivergent_or_disabled AS nd_flag,
+  COUNT(*) AS total_apprentices,
+  
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2) AS risk_rate,
+  ROUND(AVG(CASE WHEN fp.is_successful THEN 1 ELSE 0 END)::NUMERIC, 2) AS success_rate,
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2) AS placement_rate,
+  
+  ROUND(AVG(fp.attendance_rate)::NUMERIC, 2) AS avg_attendance,
+  ROUND(AVG(fp.feedback_score)::NUMERIC, 2) AS avg_feedback,
+  ROUND(AVG(fp.project_score_avg)::NUMERIC, 2) AS avg_project_score
+
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+JOIN dim_cohort c ON fp.cohort_id = c.cohort_id
+GROUP BY c.curriculum_version, da.neurodivergent_or_disabled
+ORDER BY c.curriculum_version, nd_flag;

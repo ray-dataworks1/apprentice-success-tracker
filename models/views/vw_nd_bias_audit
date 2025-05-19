@@ -1,0 +1,24 @@
+CREATE OR REPLACE VIEW vw_nd_bias_audit AS
+SELECT
+  da.neurodivergent_or_disabled AS nd_status,
+  COUNT(*) AS total_apprentices,
+  
+  ROUND(AVG(CASE WHEN fp.is_at_risk THEN 1 ELSE 0 END)::NUMERIC, 2) AS risk_rate,
+  ROUND(AVG(CASE WHEN fp.placement_status = 'Placed' THEN 1 ELSE 0 END)::NUMERIC, 2) AS placement_rate,
+  
+  ROUND(AVG(
+    CASE 
+      WHEN fp.perceived_readiness = 'Excellent' THEN 3
+      WHEN fp.perceived_readiness = 'Good' THEN 2
+      ELSE 1
+    END
+  )::NUMERIC, 2) AS avg_readiness_score,
+  
+  ROUND(AVG(attendance_rate)::NUMERIC, 2) AS avg_attendance_rate,
+  ROUND(AVG(feedback_score)::NUMERIC, 2) AS avg_feedback_score,
+  ROUND(AVG(late_submissions)::NUMERIC, 2) AS avg_late_submissions,
+  ROUND(AVG(coach_visits)::NUMERIC, 2) AS avg_coach_visits
+FROM fact_apprentice_performance fp
+JOIN dim_apprentice da ON fp.apprentice_id = da.apprentice_id
+GROUP BY da.neurodivergent_or_disabled;
+
