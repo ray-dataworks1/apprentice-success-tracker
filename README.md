@@ -30,7 +30,7 @@ Enable program managers to:
 
 ---
 
-## 🧱 Star Schema Design
+## Star Schema Design
 
 ![Database Schema](docs/schema_diagram.png)
 
@@ -41,7 +41,7 @@ Enable program managers to:
 
 ---
 
-## 🧪 Mock Data Generation
+## Mock Data Generation
 
 Script: [`generate_mock_data.sql`](generate_mock_data.sql)
 
@@ -52,7 +52,7 @@ Script: [`generate_mock_data.sql`](generate_mock_data.sql)
 
 ---
 
-## 🔎 Views (for BI & audit)
+## Views (for BI & audit)
 
 | View Name | Purpose |
 |-----------|---------|
@@ -65,7 +65,7 @@ Script: [`generate_mock_data.sql`](generate_mock_data.sql)
 
 ---
 
-## 🔁 Models (dbt-style layers)
+## Models (dbt-style layers)
 
 | File Name | Purpose |
 |-----------|---------|
@@ -89,13 +89,13 @@ Script: [`generate_mock_data.sql`](generate_mock_data.sql)
 
 ---
 
-## 👩🏾‍💻 Author
+## Author
 
 **Ray** – Behavioural systems thinker, aspiring Data Analytics Engineer & Data Strategist.
 
 ---
 
-## 🏁 Next Steps
+## Next Steps
 
 - Add dashboard layer (Power BI)
 
