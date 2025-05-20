@@ -1,41 +1,105 @@
 <h1 align="center">Apprentice Success Tracker</h1>
-<p align="center"><a href="#project-description">Project Description</a> - <a href="#key-features">Key Features</a> - <a href="#technology-stack">Tech Stack</a></p>
+<p align="center"><a href="#project-description">Project Description</a> - <a href="#project-goal">Project Goal</a> - <a href="#technology-stack">Tech Stack</a></p>
 
 ## Project Description
 
-The Apprentice Success Tracker is a stakeholder-facing analytics project designed to identify the key predictors of apprenticeship success and flag individuals at risk of not securing placement. Built using realistic mock data modelled on Multiverse’s mission of equitable talent development, the project helps program managers prioritize interventions, understand cohort trends, and monitor curriculum impact over time.
+A behaviorally-informed, stakeholder-driven analytics project simulating real-world apprentice outcomes across curriculum versions, equity dimensions, and success metrics. Built using SQL, dbt-style modular modeling, and reproducible mock data generation.
 
-## Key Components
+---
 
-dim\_apprentice – Stores apprentice demographics (gender, ethnicity, socioeconomic status, etc.)
+## Project Goal
 
-dim\_cohort – Defines cohort groupings and their curriculum version
+Enable program managers to:
+- Track apprentice success and risk
+- Identify placement predictors
+- Audit curriculum impact on outcomes
+- Surface equity concerns (e.g., ND, SES, ethnicity)
+- Prioritize data-driven interventions
 
-dim\_curriculum – Tracks curriculum change history with descriptions for auditability
+---
 
-fact\_ apprentice\_performance – Central fact table combining engagement and performance metrics
+## Stakeholder Context
 
-SQL Logic Layer – Includes staging, intermediate, and final models to structure and clean the data
+**Role:** Program Manager overseeing apprentice outcomes  
+**Key Questions:**
+1. Which apprentices are most at risk of not being placed?
+2. What traits and behaviours predict successful placements?
+3. Why has apprentice churn increased since the most recent curriculum change?
+4. How are apprentices engaging with training?
+5. How do employers perceive apprentice readiness?
 
-Stakeholder Story – A concise narrative that translates insights into meaningful business actions
+---
 
-Dashboard Layer – Power BI/Excel compatible output for stakeholder visibility
+## 🧱 Star Schema Design
 
-## Key Features
+![Database Schema](docs/schema_diagram.png)
 
-Risk Flagging – Automatically flags apprentices at risk using logic based on attendance, feedback, and behaviour
+- `dim_apprentice`: demographic + cohort-linked info
+- `dim_cohort`: links curriculum version to training windows
+- `dim_curriculum`: version history for learning format changes
+- `fact_apprentice_performance`: performance metrics, flags, and audit-ready fields
 
-Behaviourally-Informed Logic – Combines quantitative performance with qualitative equity insight
+---
 
-Cohort & Curriculum Impact Analysis – Tracks trends over time and measures outcomes across curriculum changes
+## 🧪 Mock Data Generation
 
-Modular SQL Design – Clean, maintainable queries following dbt-style best practices
+Script: [`generate_mock_data.sql`](generate_mock_data.sql)
 
-Realistic Mock Data – Synthesised using statistical and sociological assumptions from real-world apprenticeships
+- 60 apprentices across 3 curriculum versions
+- Stakeholder-driven random bias: e.g., ND + underserved = lower feedback
+- Reproducible with `setseed(0.42)` for consistent demos
+- Scores, feedback, engagement, risk, and placement status
 
-Stakeholder-Ready Insights – Output designed for coaching, curriculum planning, and program improvement
+---
 
-Privacy-Conscious – No names or PII; fully anonymised apprentice data aligned with ethical data handling
+## 🔎 Views (for BI & audit)
+
+| View Name | Purpose |
+|-----------|---------|
+| `vw_churn_by_curriculum` | Tracks placement success & churn across versions |
+| `vw_success_predictors` | Generates weighted success score based on readiness, attendance, and punctuality |
+| `vw_gender_bias_audit` | Equity audit by gender |
+| `vw_ethnicity_bias_audit` | Equity audit by ethnicity |
+| `vw_nd_bias_by_curriculum` | Intersectional analysis: curriculum + ND impact |
+| `vw_outcomes_by_trait` | Pivoted summary by any key trait (ND, gender, SES) |
+
+---
+
+## 🔁 Models (dbt-style layers)
+
+| File Name | Purpose |
+|-----------|---------|
+| `stg_apprentice_data.sql` | Cleans and preps base apprentice info |
+| `int_apprentice_metrics.sql` | Joins dimensions with performance facts |
+| `final_success_risk_model.sql` | Calculates success score and predictor ranking |
+
+---
+
+## How to Run
+
+1. **Load schema**: Run `generate_mock_data.sql` in PostgreSQL
+2. **View insights**: Run audit queries or connect to BI tool (PowerBI/Metabase/Tableau)
+3. **Optional**: Use views in dashboard filters (ND, gender, curriculum version)
+
+---
+
+## Sample Insight (from `vw_nd_bias_by_curriculum`)
+
+> “Neurodivergent apprentices performed best under assessment-heavy (V1) formats. In unstructured formats (V3), risk rates spiked — suggesting structural rather than ability-related barriers. ND project scores remained solid even when perceived readiness dropped.”
+
+---
+
+## 👩🏾‍💻 Author
+
+**Ray** – Behavioural systems thinker, aspiring Data Analytics Engineer & Data Strategist.
+
+---
+
+## 🏁 Next Steps
+
+- Add dashboard layer (Power BI)
+
+
 
 ## Tech Stack
 
@@ -48,3 +112,4 @@ GitHub – Version-controlled and structured for extensibility
 Power BI – Dashboard layer for stakeholder delivery
 
 Behavioural Science + Equity Lens – Used to frame risk logic and stakeholder relevance
+
