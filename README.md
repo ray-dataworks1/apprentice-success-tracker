@@ -3,7 +3,7 @@
 
 ## Project Description
 
-A behaviorally-informed, stakeholder-driven analytics project simulating real-world apprentice outcomes across curriculum versions, equity dimensions, and success metrics. Built using SQL, dbt-style modular modeling, and reproducible mock data generation.
+A behaviourally-informed, stakeholder-driven analytics project simulating real-world apprentice outcomes across curriculum versions, equity dimensions, and success metrics. Built using SQL, dbt-style modular modeling, and reproducible mock data generation.
 
 ---
 
