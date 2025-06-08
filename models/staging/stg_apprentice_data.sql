@@ -37,7 +37,7 @@ cleaned AS (
     -- Ethnicity validation
     LOWER(TRIM(ethnicity)) AS ethnicity_raw,
     CASE 
-      WHEN LOWER(TRIM(ethnicity)) IN ('black', 'asian', 'mixed', 'other') 
+      WHEN LOWER(TRIM(ethnicity)) IN ('black', 'asian', 'mixed', 'other')
         THEN LOWER(TRIM(ethnicity)) 
       ELSE 'unknown' 
     END AS ethnicity_validated,

@@ -2,6 +2,8 @@
 -- MOCK DATA GENERATOR: Apprentice Success Tracker
 -- ========================================
 
+
+
 -- Step 1: dim_curriculum
 DROP TABLE IF EXISTS dim_curriculum;
 CREATE TABLE dim_curriculum (
@@ -263,3 +265,92 @@ SELECT
     placement_status,
     perceived_readiness
 FROM final_flags;
+
+
+
+
+-- OVERVIEW
+-- This script creates a **synthetic dataset** to simulate apprentice performance across cohorts and curricula. It's ideal for Analytics Engineering and DE use cases involving pipeline testing, fairness logic, or BI dashboard development. Data generation is **bias-aware** and seeded for **reproducibility**.
+
+-- ===========================================
+-- STEP 1: dim_curriculum — Curriculum Versions
+-- -------------------------------------------
+-- This table tracks curriculum changes over time.
+-- Each version (V1–V3) includes:
+-- - `change_date`: When the update occurred
+-- - `change_type`: A short label for the update (e.g. Format Revamp)
+-- - `description`: Context about what changed (e.g. more project-based work)
+
+-- ===========================================
+-- STEP 2: dim_cohort — Apprentice Cohorts
+-- -------------------------------------------
+-- Each cohort has:
+-- - A name and date range (e.g. 'Winter 2023')
+-- - A linked `curriculum_version` (FK from `dim_curriculum`)
+-- This allows curriculum shifts to be tied to actual learner groups.
+
+-- ===========================================
+-- STEP 3: dim_apprentice — Synthetic Apprentice Demographics
+-- -------------------------------------------
+-- - 60 apprentices are generated using `generate_series`.
+-- - Random seed `0.42` ensures **repeatable outputs**.
+-- - Each apprentice gets:
+--   - ID (e.g., 'A001')
+--   - Gender: 55% Female, 43% Male, 2% Other
+--   - Age: 20–30
+--   - Ethnicity: Weighted across 5 groups
+--   - Socioeconomic Status: 37% marked 'Underserved'
+--   - Neurodivergence/Disability: 22% marked 'Yes'
+--   - Location: Rotates between London, Manchester, Birmingham
+--   - Cohort ID: Apprentices divided evenly into 3 cohorts
+
+-- ===========================================
+--  STEP 4: fact_apprentice_performance — Core Metrics Table
+-- -------------------------------------------
+-- This fact table stores **key success indicators** per apprentice.
+
+-- Core fields:
+-- - Attendance rate (0–1.00)
+-- - Average project score (0–100)
+-- - Feedback score (1.0–5.0)
+-- - Coach visits, portal logins, late submissions
+-- - Flags: `is_at_risk`, `is_successful`
+-- - Outcomes: `placement_status`, `perceived_readiness`
+
+-- Data generation uses 3 CTE layers:
+
+-- -- apprentice_base:
+-- Joins each apprentice to their cohort and curriculum, retaining demographics for logic control.
+
+-- -- metrics:
+-- Applies conditional logic to generate performance data.
+-- Bias-aware tweaks include:
+--   - Lower attendance for V3 or neurodivergent groups
+--   - Higher attendance for female apprentices
+--   - Higher coach visits for neurodivergent apprentices in London
+--   - Fewer portal logins if underserved
+--   - More late submissions if both ND + underserved
+
+-- -- flags:
+-- Calculates derived metrics:
+--   - `is_at_risk`: <70% attendance OR feedback <3
+--   - `is_successful`: ≥70% AND feedback ≥3
+--   - `perceived_readiness`: Tiered as 'Excellent', 'Good', or 'Needs Support' based on project and feedback scores
+
+-- -- final_flags:
+-- Assigns `placement_status` based on realistic bias-aware probabilities:
+--   - ND + Underserved + At Risk: 85% chance of Unplaced
+--   - Excellent: 95% Placed
+--   - Good: 80% Placed
+--   - Needs Support: 30% Placed
+--   - Others: Default Unplaced
+
+-- Final INSERT:
+-- Data from `final_flags` is inserted into the `fact_apprentice_performance` table.
+
+-- ===========================================
+-- USE CASES
+-- -------------------------------------------
+-- - Test dashboards, ETL pipelines, or BI tools
+-- - Validate fairness logic and outcome disparities
+-- - Run simulations on apprentice outcomes and curriculum effectiveness
