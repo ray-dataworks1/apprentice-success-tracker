@@ -40,3 +40,41 @@ SELECT
   )::NUMERIC, 2
 ) AS success_score
 FROM int_apprentice_metrics;
+
+
+-- The final_success_risk_model SQL view generates a success_score for each apprentice by combining:
+
+-- Engagement
+
+-- Performance
+
+-- Coach perception
+
+-- Reliability
+
+-- Each component is weighted, and all inputs are scaled to a 0–1 range for fairness and comparability.
+
+-- Success Score Breakdown
+-- Already between 0 and 1 (e.g., 0.87 for 87% attendance)
+
+-- Weighted at 30% of total score
+
+-- Scales the 1–5 feedback score down to 0–1
+
+-- E.g., 4.0 becomes 0.8 → contributes 0.16
+
+-- Weighted at 20%
+
+-- Normalises the 0–100 project average
+
+-- E.g., 75 becomes 0.75 → contributes 0.225
+
+-- Weighted at 30%
+
+-- Assumes 5 or fewer late submissions as the cap
+
+-- The fewer the late submissions, the better
+
+-- E.g., 2 lates → (5 - 2)/5 = 0.6 → contributes 0.12
+
+-- Weighted at 20%
