@@ -94,22 +94,36 @@ Script: [`generate_mock_data.sql`](generate_mock_data.sql)
 **Ray** – Behavioural systems thinker, aspiring Data Analytics Engineer & Data Strategist.
 
 ---
+📌 Project at a Glance
 
-## Next Steps
+🚀 Tech Stack: PostgreSQL + dbt-style modular models
 
-- Add dashboard layer (Power BI)
+📊 Data Model: 3 dimensions, 1 fact, 6 audit views
 
+✅ Core Deliverables: Success risk model, churn by curriculum, bias audit views
 
+🔎 Stakeholders: Program Managers (equity, curriculum outcomes)
 
-## Tech Stack
+🔬 Known Issues / Next Steps
 
-PostgreSQL – Used for mock data generation, modelling, and querying
+Data volume → Only 60 apprentices generated; pipeline is scalable but sample small.
 
-dbt-Inspired Folder Structure – Models split into staging, intermediate, and final layers
+Dashboard gap → No BI layer yet; next step is Power BI dashboards with filters (ND, gender, curriculum version).
 
-GitHub – Version-controlled and structured for extensibility
+Test coverage → Currently minimal; should add unique apprentice_id + relationships apprentice → cohort.
 
-Power BI – Dashboard layer for stakeholder delivery
+Future Enhancements
 
-Behavioural Science + Equity Lens – Used to frame risk logic and stakeholder relevance
+Expand synthetic generator to thousands of apprentices
 
+Add employer feedback + placement outcomes
+
+Time-series churn tracking
+
+📝 Lessons Learned
+
+Applied behavioural + equity framing inside a data warehouse model.
+
+Practised dbt-style staging → int → final layering.
+
+Surfaced insights (ND apprentices perform best under assessment-heavy formats) showing value beyond SQL.
